@@ -1,0 +1,96 @@
+{%extends 'astro_app/base.html'%}
+{% block language_selection %}
+{% endblock %}
+{%block body%}
+    <div style="background-color:#fceed2; padding-bottom: 4%;">
+        <h2 style="margin-left: 35%;">{{ data.card_name }}</h2>
+    {% if data.card_image %}
+    <div class="image-container" style="margin-left: 20%; margin-top: 2%;">
+        <img src="{{ data.card_image.url }}"  class="shadowed-image">
+    </div>
+    {% else %}
+        <p>No image available for this card.</p>
+    {% endif %}
+    <ul style="margin-left: 50%;margin-top: -20%;">
+        {% for prop in data.property %}
+            <li>{{ prop }}</li>
+        {% endfor %}
+    </ul>
+    
+{% if data.prediction_hin %}
+<div style="margin-top: 14%;">
+    <p>{{ data.prediction_hin }}</p>
+{% else %}
+<p>{{ data.prediction_eng }}</p>
+{% endif %}
+</div>
+
+    </div>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Heading Styles */
+        h2 {
+            margin-left: 35%;
+        }
+
+        /* Image Container Styles */
+        .image-container {
+            margin-left: 20%;
+            margin-top: 2%;
+        }
+
+        /* Image Styles */
+        .shadowed-image {
+            display: block;
+            max-width: 100%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        /* List Styles */
+   
+
+        /* Paragraph Styles */
+        p {
+            margin-top: 14%;
+        }
+
+        /* Background Color for the Container */
+
+        /* Mobile Styles */
+        @media only screen and (max-width: 600px) {
+            /* Adjust styles for smaller screens */
+            h2 {
+                margin-left: 10%;
+                font-size: 1.5em;
+            }
+
+            .image-container {
+                margin-left: 5%;
+            }
+
+            .shadowed-image {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                height: 200px;
+                margin-top: 20%;
+            }
+
+            ul {
+                margin-left: 10%;
+            }
+
+            p {
+                margin-top: 8%;
+                font-size: 18px;
+            }
+        }
+    </style>
+
+{%endblock%}

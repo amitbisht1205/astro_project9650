@@ -1,0 +1,12 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}result page{%endblock%}
+{%block body%}
+<h1>soul number Calculator</h1>
+<form method="post">
+        {% csrf_token %}
+        {{ form.namelist.label_tag }}<br>
+        {{ form.namelist }}<br>
+        <small>Enter the name list here</small><br><br>
+        <button type="submit">Calculate</button>
+</form>
+{%endblock%}

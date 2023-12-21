@@ -1,0 +1,14 @@
+{%extends 'astro_app/base.html'%}
+{%block body%}
+    <h1>Astrology Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+
+    {% if data %}
+    <h2>Astrology Data:</h2>
+    <pre>{{ data | safe }}</pre>
+    {% endif %}
+{%endblock%}

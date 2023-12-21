@@ -1,0 +1,15 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Calculate Balance Number{%endblock%}
+{%block body%}
+<h1>Calculate Balance Number</h1>
+<form method="post">
+        {% csrf_token %}
+        {{ form.ch.label_tag }}<br>
+        {{ form.ch }}<br>
+        <small>Enter a single character here</small><br><br>
+        <button type="submit">Calculate</button>
+</form>
+    {% if error_message %}
+    <p>{{ error_message }}</p>
+    {% endif %}
+{%endblock%}

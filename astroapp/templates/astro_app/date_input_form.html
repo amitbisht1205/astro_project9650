@@ -1,0 +1,11 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Enter Date Calculator{%endblock%}
+{%block body%}
+<h1>Enter Date Calculator</h1>
+<h1>Enter Date</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Calculate</button>
+</form>
+{%endblock%}

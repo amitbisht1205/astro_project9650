@@ -1,0 +1,13 @@
+{%extends 'astro_app/base.html'%}
+{%block title%} properties Result page{%endblock%}
+{%block body%}
+<h1>properties Result</h1>
+{% if properties %}
+<h2>Properties:</h2>
+<ul>
+    {% for property in properties %}
+    <li>{{ property }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{%endblock%}

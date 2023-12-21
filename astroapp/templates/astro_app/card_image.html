@@ -1,0 +1,9 @@
+{%extends 'astro_app/base.html'%}
+{%block body%}
+<h1>Random Tarot Card Image</h1>
+{% if card_image %}
+    <img src="{{ card_image.url }}" alt="Tarot Card Image">
+{% else %}
+<p>No card image found.</p>
+{% endif %}
+{%endblock%}

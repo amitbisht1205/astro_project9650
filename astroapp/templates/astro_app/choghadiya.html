@@ -1,0 +1,359 @@
+{% extends 'astro_app/base.html' %}
+{% block body %}
+<style>
+    h2 {
+    color: #333; /* Set your desired text color */
+    font-size: 2em; /* Adjust the font size */
+    margin-bottom: 10px; /* Add margin at the bottom */
+}
+
+p {
+    color: #666; /* Set your desired text color */
+    font-size: 1.2em; /* Adjust the font size */
+    line-height: 1.5; /* Set the line height for better readability */
+    margin-bottom: 20px; /* Add margin at the bottom */
+    margin-left: 15%;
+    
+}
+</style>
+<h2 style="margin-left: 31%; margin-bottom: -10px;">Discover Choghadiya Timings</h2>
+<p style="margin-left: 80%;">Explore auspicious timings for different<br> activities with our expert astrological <br>services.From choghadiya timings to  personalized<br> horoscopes, we've got you covered for a<br> brighter future.</p>
+
+
+
+    <form method="post" id="choghadiyaForm" action="{% url 'astroapp:choghadiya' %}">
+        {% csrf_token %}
+        
+        <label for="dateSelect">Select Date:</label>
+        <select id="dateSelect" name="dateSelect" required>
+            <option value="today">Today</option>
+            <option value="tomorrow">Tomorrow</option>
+            <option value="yesterday">Yesterday</option>
+        </select>
+        <br>
+
+        <label for="currentDate">Current Date:</label>
+        <input type="text" id="currentDate" name="currentDate" readonly>
+        <br>
+
+        <label for="currentTime">Current Time:</label>
+        <input type="text" id="currentTime" name="currentTime" readonly>
+        <br>
+
+        <div class="form-place">
+      <label for="place">Place of Birth</label>
+      <input type="text" id="place" > <!-- Add id and name attribute -->
+    </div>
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+
+        <button class="btn btn-primary" type="submit" id="submit-button">Submit</button>
+    </form>
+    <div id="choghadiyaResults">
+       
+    </div>
+    <style>
+    .highlight {
+        background-color: red;
+        color: white;
+        width: 350px;
+    }
+</style>
+<style>
+    #choghadiyaForm {
+    max-width: 400px;
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 32%;
+    margin-top: -250px;
+}
+
+#choghadiyaForm label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+#choghadiyaForm select,
+#choghadiyaForm input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+#choghadiyaForm .form-place {
+    margin-bottom: 16px;
+}
+
+#choghadiyaForm #submit-button {
+    background-color: #007bff; /* Button color */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#choghadiyaForm #submit-button:hover {
+    background-color: #0056b3; /* Button color on hover */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply animation to the form */
+#choghadiyaForm {
+    animation: fadeIn 1s ease-in-out;
+}
+#choghadiyaForm.animate-form {
+    animation: fadeIn 1s ease-in-out;
+}
+</style>
+
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2bSrjroNJthADBBC0l53d08wbx34iZvc&libraries=places&callback=initMap"></script>
+    <script type="text/javascript">
+        function initMap() {
+      const autocomplete = new google.maps.places.Autocomplete(document.getElementById('place'), {
+          types: ['geocode'],
+      });
+  
+      google.maps.event.addListener(autocomplete, 'place_changed', function () {
+          var place = autocomplete.getPlace();
+          if (place.geometry && place.geometry.location) {
+              const latitude = place.geometry.location.lat();
+              const longitude = place.geometry.location.lng();
+  
+              // Set the latitude and longitude values in hidden input fields
+              document.getElementById('latitude').value = latitude;
+              document.getElementById('longitude').value = longitude;
+          }
+      });
+  }
+  
+  window.initMap = initMap;
+    
+        document.getElementById('choghadiyaForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+    
+            const formValues = logFormValues();
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+            $.ajax({
+                url: '{% url "astroapp:choghadiya" %}',
+                type: 'POST',
+                data: formValues,
+                headers: { 'X-CSRFToken': csrftoken },
+                success: function (data) {
+                    console.log('Server response:', data);
+                
+                    updateChoghadiyaDetails(data);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    // Handle any errors if the AJAX request fails
+                }
+            });
+        });
+        function updateChoghadiyaDetails(data) {
+    const choghadiyaResultsContainer = document.getElementById('choghadiyaResults');
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // Update the DOM with the new Choghadiya details
+    choghadiyaResultsContainer.innerHTML = `
+        <h2>Daytime Choghadiya</h2>
+        <table class="daytime-table">
+            <tr>
+                <th>Choghadiya Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+            ${data.choghadiya_timings_day.map(choghadiya => `
+                <tr ${highlightRow(choghadiya, currentTime)}>
+                    <td>${choghadiya.name}</td>
+                    <td>${choghadiya.start_time}</td>
+                    <td>${choghadiya.end_time}</td>
+                </tr>
+            `).join('')}
+        </table>
+
+        <h2>Night time Choghadiya</h2>
+        <table class="nighttime-table">
+            <tr>
+                <th>Choghadiya Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+            ${data.choghadiya_timings_night.map(choghadiya => `
+                <tr ${highlightRow(choghadiya, currentTime)}>
+                    <td>${choghadiya.name}</td>
+                    <td>${choghadiya.start_time}</td>
+                    <td>${choghadiya.end_time}</td>
+                </tr>
+            `).join('')}
+        </table>
+    `;
+}
+
+
+function highlightRow(choghadiya, currentTime) {
+    // Check if the current time lies between the start and end times of the Choghadiya
+    const startTime = new Date(`01/01/2000 ${choghadiya.start_time}`);
+    const endTime = new Date(`01/01/2000 ${choghadiya.end_time}`);
+    const currentTimeDate = new Date(`01/01/2000 ${currentTime}`);
+
+    if (currentTimeDate >= startTime && currentTimeDate < endTime) {
+        return 'class="highlight"';
+    }
+
+    // Return an empty string if no highlighting is needed
+    return '';
+}
+
+// Update current time and Choghadiya highlight every minute
+setInterval(updateCurrentTimeHighlight, 60000);
+
+function updateCurrentTimeHighlight() {
+    const currentTimeElement = document.getElementById('currentTimeHighlight');
+    currentTimeElement.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// Initial update
+updateChoghadiyaDetails({ choghadiya_timings_day: [], choghadiya_timings_night: [] });
+
+        document.getElementById('dateSelect').addEventListener('change', function () {
+            const customDateField = document.getElementById('customDateField');
+            const customDateInput = document.getElementById('customDate');
+    
+            if (this.value === 'custom') {
+                customDateField.style.display = 'block';
+                customDateInput.required = true;
+            } else {
+                customDateField.style.display = 'none';
+                customDateInput.required = false;
+            }
+        });
+    
+        function getCurrentDateTime() {
+            const now = new Date();
+            const currentDate = now.toISOString().split('T')[0];
+            const currentTime = now.toLocaleTimeString();
+            document.getElementById('currentDate').value = currentDate;
+            document.getElementById('currentTime').value = currentTime;
+        }
+    
+        function logFormValues() {
+            const selectedDateOption = document.getElementById('dateSelect').value;
+            const currentDate = document.getElementById('currentDate').value;
+            const currentTime = document.getElementById('currentTime').value;
+            const placeOfBirth = document.getElementById('place').value;
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+    
+            console.log('Selected Date Option:', selectedDateOption);
+            console.log('Current Date:', currentDate);
+            console.log('Current Time:', currentTime);
+            console.log('Place of Birth:', placeOfBirth);
+            console.log('Latitude:', latitude);
+            console.log('Longitude:', longitude);
+    
+            return {
+                selectedDateOption,
+                currentDate,
+                currentTime,
+                placeOfBirth,
+                latitude,
+                longitude,
+            };
+        }
+    
+        getCurrentDateTime();
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const choghadiyaForm = document.getElementById('choghadiyaForm');
+    
+    // Add a class to trigger the animation
+    choghadiyaForm.classList.add('animate-form');
+
+    // Listen for the end of the animation and remove the class
+    choghadiyaForm.addEventListener('animationend', function () {
+        choghadiyaForm.classList.remove('animate-form');
+    });
+});
+    </script>
+    <style>
+        #choghadiyaResults {
+    margin-top: 20px;
+}
+
+.daytime-table,
+.nighttime-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.daytime-table th,
+.daytime-table td,
+.nighttime-table th,
+.nighttime-table td {
+    border: 2px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.daytime-table th,
+.nighttime-table th {
+    background-color: #007bff; /* Header background color */
+    color: #fff;
+}
+
+.daytime-table td.highlight,
+.nighttime-table td.highlight {
+    background-color: #ffcccb; /* Highlight background color */
+}
+
+.currentTimeHighlight {
+    font-weight: bold;
+    color: #007bff; /* Highlight color for current time */
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Apply animation to tables */
+.daytime-table, .nighttime-table {
+    animation: fadeIn 1s ease-in-out;
+}
+
+    </style>
+{% endblock %}
+

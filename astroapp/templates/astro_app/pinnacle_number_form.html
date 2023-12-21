@@ -1,0 +1,10 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Calculate Pinnacle Numbers page{%endblock%}
+{%block body%}
+<h1>Calculate Pinnacle Numbers</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Calculate</button>
+</form>
+{%endblock%}

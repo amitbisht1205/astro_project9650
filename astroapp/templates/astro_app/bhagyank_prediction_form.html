@@ -1,0 +1,11 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Get Bhagyank Prediction page{%endblock%}
+{%block body%}
+<h1>Get Bhagyank Prediction</h1>
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <small>Enter the number here</small><br><br>
+        <button type="submit">Get Prediction</button>
+</form>
+{%endblock%}

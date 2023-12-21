@@ -1,0 +1,96 @@
+{%extends 'astro_app/base.html'%}
+{% block title %}Tarot & Numerology Predictions - Call Astro{% endblock %}
+{% block language_selection %}
+{% endblock %}
+{%load static%}
+{%block head%}
+
+<meta name="description" content="Explore your life path with our Numerology prediction service. Get personalized insights into your strengths and challenges.">
+
+    <meta name="keywords" content="numerology prediction, life path, personalized insights, strengths, challenges">
+
+    <link rel="canonical" href="{% url 'astroapp:test_numerology' %}">
+    <meta property="og:title" content="Numerology Prediction - Call Astro">
+    <meta property="og:description" content="Explore your life path with our Numerology prediction service. Get personalized insights into your strengths and challenges.">
+    <meta property="og:image" content="{% static 'astroapp/numerology.jpg' %}">
+    <meta property="og:url" content="{% url 'astroapp:test_numerology' %}">
+    <meta name="twitter:card" content="summary_large_image">
+
+
+    <meta name="description" content="Unlock mysteries of the future with our Tarot card prediction service. Receive insights and guidance for your life's journey.">
+    <meta name="keywords" content="tarot card prediction, tarot reading, future insights, guidance">
+
+    <link rel="canonical" href="{% url 'astroapp:click_to_get_card' %}">
+    <meta property="og:title" content="Tarot Card Prediction - Call Astro">
+    <meta property="og:description" content="Unlock mysteries of the future with our Tarot card prediction service. Receive insights and guidance for your life's journey.">
+    <meta property="og:image" content="{% static 'astroapp/tarot.jpg' %}">
+    <meta property="og:url" content="{% url 'astroapp:click_to_get_card' %}">
+    <meta name="twitter:card" content="summary_large_image">
+{%endblock%}
+{%block body%}
+{%if request.user.is_authenticated%}
+<div class="container" style="margin-bottom: -75px;">
+  <h2 style="margin-left: 15%;">Welcome to Tarot Card  and Numerology Prediction</h2>
+  <!-- <p style="margin-left: 10%;">Unlock the mysteries of your future with our Tarot card and Numerology prediction service. Receive insights and guidance for your life's journey.</p> -->
+  <!-- Add more content specific to Tarot card prediction -->
+</div>
+<div class="container" style="margin-top: 8%; margin-left: 12%;">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card" style="height: 80%; width: 80%;">
+          <!-- Card image -->
+          <img class="card-img-top" src="{% static 'astroapp/numerology.jpg' %}" alt="Card image 1" style="height: 100%; width: 100%;">
+          <a href="{% url 'astroapp:test_numerology' %}" class="btn btn-primary btn-block" style="height: 100px; width: 100%;">Know Your Numerology Prediction</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card"style="height: 80%; width: 80%;">
+          <!-- Card image -->
+          <img class="card-img-top" src="{% static 'astroapp/tarot.jpg' %}" alt="Card image 2" style="height: 100%; width: 100%;">
+          <a href="{% url 'astroapp:click_to_get_card' %}" class="btn btn-primary btn-block" style="height: 100px; width: 100%;">Know Your Tarot Prediction</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<style>
+  .container {
+   margin-top: 2%;
+}
+  @media (max-width: 1200px) {
+    .container {
+        /* Adjust container styles for phones */
+        padding-top: 10%;
+        margin-top: 5%;
+    }
+
+    h2 {
+        /* Adjust h2 styles for phones */
+        font-size: 13px; /* Example adjustment, modify as needed */
+        margin-top: -5%;
+        margin-bottom: 15%;
+  
+    }
+
+   
+
+    .card {
+        /* Adjust card styles for phones */
+        height: 60%; /* Example adjustment, modify as needed */
+        width: 100%; /* Example adjustment, modify as needed */
+    }
+
+    .card-img-top {
+        /* Adjust card image styles for phones */
+        height: 100%; /* Example adjustment, modify as needed */
+        width: 100%; /* Example adjustment, modify as needed */
+    }
+
+    .btn {
+        /* Adjust button styles for phones */
+        height: 80px; /* Example adjustment, modify as needed */
+        width: 100%; /* Example adjustment, modify as needed */
+    }
+}
+</style>
+{%endif%}
+{%endblock%}

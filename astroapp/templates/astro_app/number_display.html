@@ -1,0 +1,12 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}reduce to single digit page{%endblock%}
+{%block body%}
+<h1>reduce to single digit Calculator</h1>
+<form method="post">
+        {% csrf_token %}
+        {{ form.number.label_tag }}<br>
+        {{ form.number }}<br>
+        <small>Enter the number here</small><br><br>
+        <button type="submit">Calculate</button>
+</form>
+{%endblock%}

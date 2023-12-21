@@ -1,0 +1,10 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}result page{%endblock%}
+{%block body%}
+<h2>Tarot Prediction Form</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{%endblock%}

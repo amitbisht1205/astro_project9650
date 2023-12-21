@@ -1,0 +1,96 @@
+<!-- astro_app/registration.html -->
+{% extends 'astro_app/base.html' %}
+{% block body %}
+  <h2>Register</h2>
+  <form method="post" id="registrationForm">
+    {% csrf_token %}
+    {{ form.phone_number }}
+    <div id="otpSection" style="display: none;">
+      <label for="otp">Enter OTP:</label>
+      <input type="text" id="otp" name="otp" required>
+      <button type="button" onclick="verifyOTP()">Verify OTP</button>
+    </div>
+    <button type="button" onclick="submitPhoneNumber()">Submit</button>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    function submitPhoneNumber() {
+      var form = document.getElementById('registrationForm');
+      var otpSection = document.getElementById('otpSection');
+      var phoneNumber = document.getElementById('id_phone_number').value;
+
+      if (!phoneNumber) {
+        alert('Please enter a valid phone number.');
+        return;
+      }
+
+      otpSection.style.display = 'block';
+      document.getElementById('id_phone_number').disabled = true;
+      document.querySelector('[type="button"]').disabled = true;
+
+      // Include CSRF token from the cookie
+      var csrftoken = getCookie('csrftoken');
+
+      $.ajax({
+        url: '{% url "astroapp:register" %}',
+        type: 'POST',
+        data: {
+          'phone_number': phoneNumber,
+          'csrfmiddlewaretoken': csrftoken  // Include CSRF token from the cookie
+        },
+        success: function (response) {
+          console.log(response);  // Log the full response
+          if (response.success) {
+            alert('OTP sent successfully. Please enter the OTP to verify.');
+          } else if (response.redirect) {
+            alert('User not registered. Redirecting to signup page.');
+            window.location.href = '{% url "astroapp:signup" %}';  // Update this line
+          } else {
+            alert('Failed to send OTP. ' + (response.message || 'Undefined error'));  // Include the error message from the server
+          }
+        },
+        error: function (error) {
+          console.error(error);  // Log any error
+          alert('Failed to send OTP. Please try again.');
+        },
+      });
+    }
+
+    function verifyOTP() {
+      var otp = document.getElementById('otp').value;
+
+      // Include CSRF token from the cookie
+      var csrftoken = getCookie('csrftoken');
+
+      $.ajax({
+        url: '{% url "astroapp:verify_otp" %}',
+        type: 'POST',
+        data: {
+          'otp': otp,
+          'csrfmiddlewaretoken': csrftoken  // Include CSRF token from the cookie
+        },
+        success: function (response) {
+          console.log(response);  // Log the full response
+          if (response.success) {
+            alert('OTP verification successful. You are now logged in.');
+            window.location.href = '{% url "astroapp:home" %}';
+          } else {
+            alert('Failed to verify OTP. ' + (response.message || 'Undefined error'));  // Include the error message from the server
+          }
+        },
+        error: function (error) {
+          console.error(error);  // Log any error
+          alert('Failed to verify OTP. Please try again.');
+        },
+      });
+    }
+
+    // Function to get CSRF token from the cookie
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+  </script>
+{% endblock %}

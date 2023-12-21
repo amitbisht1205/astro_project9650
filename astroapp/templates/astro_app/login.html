@@ -1,0 +1,215 @@
+{% extends 'astro_app/base.html' %}
+{% block title %}Sign In to Call Astro{% endblock %}
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+{%load socialaccount%}
+{%providers_media_js%}
+{%load static%}
+{% block language_selection %}
+{% endblock %}
+{%block head%}
+<meta name="description" content="At AstroHelp, we believe that even while possessing incredible talents and strengths – every now &amp; then almost everyone needs a little help and guidance to make their dreams a reality. It is this conviction that drives AstroHelp towards what it does.
+
+        Our community of online astrologers in India are not only seasoned at vedic astrology, after years of personal practice, but are also absolutely apt at soft skills giving utmost importance to listening patiently.They strive to impart the best of their knowledge to accurately predict, personally advise and provide simple but effective solutions to every client who reaches out. Our astrologers are carefully chosen through a process that is overly sensitive to looking out for the ones who are genuine, compassionate, knowledgeable, intelligent, sincere and with years of practice so as to be able to offer our clients the quality of advice and healing they truly deserve.">
+
+
+<meta name="keywords" content="Astrology, Online Astrology, Horoscope, Online Horoscope, Free Online Horoscope, Astrologer, Online Astrologer, Astrology Online, Free Astrology">
+
+<link rel="canonical" href="https://www.call-astro.in/">
+
+<meta property="og:title" content="Online Astrologer, Free Astrology, Astrologer on Call India | AstroHelp">
+<meta property="og:description" content="At AstroHelp, we believe that even while possessing incredible talents and strengths – every now &amp; then almost everyone needs a little help and guidance to make their dreams a reality. It is this conviction that drives AstroHelp towards what it does.
+
+                                Our community of online astrologers in India are not only seasoned at vedic astrology, after years of personal practice, but are also absolutely apt at soft skills giving utmost importance to listening patiently.They strive to impart the best of their knowledge to accurately predict, personally advise and provide simple but effective solutions to every client who reaches out. Our astrologers are carefully chosen through a process that is overly sensitive to looking out for the ones who are genuine, compassionate, knowledgeable, intelligent, sincere and with years of practice so as to be able to offer our clients the quality of advice and healing they truly deserve.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="URL_TO_YOUR_SOCIAL_MEDIA_SHARE_IMAGE">
+<meta property="og:url" content="https://www.call-astro.in/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="At AstroHelp, we believe that even while possessing incredible talents and strengths – every now &amp; then almost everyone needs a little help and guidance to make their dreams a reality. It is this conviction that drives AstroHelp towards what it does.
+
+                                Our community of online astrologers in India are not only seasoned at vedic astrology, after years of personal practice, but are also absolutely apt at soft skills giving utmost importance to listening patiently.They strive to impart the best of their knowledge to accurately predict, personally advise and provide simple but effective solutions to every client who reaches out. Our astrologers are carefully chosen through a process that is overly sensitive to looking out for the ones who are genuine, compassionate, knowledgeable, intelligent, sincere and with years of practice so as to be able to offer our clients the quality of advice and healing they truly deserve.">
+<meta name="twitter:title" content="Online Astrologer, Free Astrology, Astrologer on Call India | AstroHelp"> 
+
+{%endblock%}
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'astroapp/sign.css' %}">
+<form method="post" enctype="multipart/form-data" class="signin-form">
+  <h1 style="margin-bottom: -1px;">Signin Page</h1>
+  {% csrf_token %}
+  {% for field in data %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          {{ field }}
+        </div>
+        {% endfor %}
+        
+        <div class="form-group text-center">
+          <button type="submit" class="btn btn-primary" value="submit">Login</button>
+        </div>
+      </div>
+    </div>
+    <div class="social-buttons">
+      <a href="{% provider_login_url 'google' %}?next=/">
+          <img src="{% static 'astroapp/search.png' %}" alt="Google Logo" style="height: 35px;">
+      </a>
+      <a href="{% provider_login_url  'facebook' method='oauth2' %}">
+          <img src="{% static 'astroapp/facebook.png' %}" alt="Facebook Logo" style="height: 35px;">
+      </a>
+  </div>
+  <div class="signup-button" id="signup-button" style="margin-top: 10%; margin-bottom: -10%;" >
+    <p id="signup-info">Don't have an account? <a href="{% url 'astroapp:signup' %}">SignUp</a></p>
+ 
+</div>
+      </form>
+     
+      <div class="login-with-number">
+        <p>Want to login with your phone number? <a href="{% url 'astroapp:register' %}"><img src="{% static 'astroapp/user.png' %}" alt="Phone Icon"></a></p>
+    </div>
+      <div class="whatsapp-button" id="whatsapp-button">
+        <img src="{% static 'astroapp/whatsapp.png' %}" alt="WhatsApp Icon">
+    </div>
+
+  </div>
+
+</div>
+  
+
+<style>
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+.signin-form
+{
+  margin-top: 5%;
+}
+
+.whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    animation: pop 0.5s ease infinite; /* Apply the pop animation */
+    transition: transform 0.2s ease-in-out; /* Add a smooth transition effect */
+}
+
+.whatsapp-button:hover {
+    transform: scale(1.2); /* Scale the button on hover for a more interactive feel */
+}
+
+.whatsapp-button img {
+    width: 50px;
+    height: 50px;
+}
+/* Your existing CSS styles */
+
+/* Add the following styles for the login with number section */
+.login-with-number {
+    text-align: center;
+    margin-top: 20px;
+    margin-right: 3%;
+}
+
+.login-with-number p {
+    margin: 0;
+}
+
+.login-with-number a {
+    display: inline-block; /* Ensure the icon is treated as a block element */
+}
+
+.login-with-number img {
+    width: 24px; /* Adjust the width of the icon */
+    height: 24px; /* Adjust the height of the icon */
+    margin-right: 5px; /* Add some space between the icon and the text */
+}
+
+/* Your existing CSS styles */
+
+/* Add the following media query for mobile devices */
+/* Your existing CSS styles */
+
+/* Add the following media query for mobile devices */
+@media only screen and (max-width: 767px) {
+  .left-contentBox {
+    margin-left: 10px; /* Adjust the margin for smaller screens */
+    margin-bottom: 0; /* Adjust the margin for smaller screens */
+  }
+  
+  .signin-form {
+    max-width: 300px; /* Set a maximum width for the form on smaller screens */
+    margin: 100px auto; /* Center the form horizontally */
+    padding: 10px; /* Add padding for better spacing */
+
+  }
+
+  .form-group {
+    margin-bottom: 10px; /* Adjust the margin between form groups for smaller screens */
+  }
+
+  .btn-primary {
+    width: 100%; /* Make the button full width on smaller screens */
+  }
+
+  #signup-button {
+    margin-top: 20%; /* Adjust the top margin for smaller screens */
+    margin-bottom: 0; /* Adjust the bottom margin for smaller screens */
+  }
+
+  .whatsapp-button {
+    position: fixed;
+    bottom: 70px; /* Adjust the bottom position for smaller screens */
+    right: 20px;
+    cursor: pointer;
+    animation: pop 0.5s ease infinite;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .whatsapp-button img {
+    width: 40px; /* Adjust the width for smaller screens */
+    height: 40px; /* Adjust the height for smaller screens */
+  }
+  .social-buttons {
+    
+    justify-content: space-around;
+    margin-top: 20px; /* Adjust the top margin for spacing between icons and other elements */
+    padding-left: 60%;
+  }
+
+  
+
+ 
+}
+@media only screen and (max-width: 767px) {
+    .login-with-number {
+       margin-top: -15%;
+       margin-left: 5%;
+    }
+
+    .login-with-number img {
+        width: 25px; /* Adjust the width for smaller screens */
+        height: 25px; /* Adjust the height for smaller screens */
+        margin-right: 0; /* Remove margin for smaller screens */
+        margin-bottom: 5px; /* Optional: Add margin at the bottom for spacing */
+        /* Add any additional styles for smaller screens */
+    }
+}
+
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const whatsappButton = document.getElementById("whatsapp-button");
+
+    whatsappButton.addEventListener("click", function() {
+        // Replace 'your_whatsapp_number' with your actual WhatsApp number
+        const whatsappNumber = '9899849319';
+        const message = encodeURIComponent('Hello! This is an automatic message.');
+
+        window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+    });
+});
+
+</script>
+
+{% endblock %}

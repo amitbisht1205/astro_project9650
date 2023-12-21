@@ -1,0 +1,11 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Loshugrid Form page{%endblock%}
+{%block body%}
+<h1>Loshugrid Form</h1>
+<h1>Loshugrid Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+{%endblock%}

@@ -1,0 +1,13 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}prediction page{%endblock%}
+{%block body%}
+<h1>Card Properties Form</h1>
+    
+<form method="post">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+    
+    <button type="submit">Get Properties</button>
+</form>
+{%endblock%}

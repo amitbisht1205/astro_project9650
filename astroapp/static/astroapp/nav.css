@@ -1,0 +1,31 @@
+/* Default styles for PC */
+.navbar-brand {
+    background-color: #d4b06a;
+    color: black;
+    margin-right: 0px;
+}
+
+.navbar .navbar-toggler-icon {
+    color: black;
+}
+
+.navbar .nav-link {
+    color: black;
+    margin-right: 150px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px;
+    }
+
+    .navbar .navbar-toggler-icon {
+        color: black;
+    }
+
+    .navbar .nav-link {
+        color: black;
+        margin-right: 4%;
+    }
+}

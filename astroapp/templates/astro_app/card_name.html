@@ -1,0 +1,11 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}card name page{%endblock%}
+{%block body%}
+<h1>card name page</h1>
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <small>Enter the number here</small><br><br>
+        <button type="submit">Get card name</button>
+</form>
+{%endblock%}

@@ -1,0 +1,16 @@
+.signup-form {
+   
+    padding: 20px; /* Add padding around the form */
+    width: 400px; /* Set the width of the form */
+    margin-left: auto;
+    margin-right: auto;
+    height: 400px;
+  }
+
+  .signup-form h2 {
+    margin-bottom: 20px; /* Add spacing below the heading */
+  }
+
+
+  
+  

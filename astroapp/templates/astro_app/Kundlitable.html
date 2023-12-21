@@ -1,0 +1,454 @@
+{%extends 'astro_app/base.html'%}
+{%load static%}
+{% block language_selection %}
+{% endblock %}
+{%block head%}
+<meta name="description" content="Get your personalized Kundli (horoscope) with accurate astrological predictions. Explore insights about your life, career, and relationships based on Vedic astrology.">
+<meta name="keywords" content="kundli, horoscope, vedic astrology, astrological predictions">
+<meta name="author" content="Your Name">
+{%endblock%}
+{%block body%}
+
+    <h1>Kundli Data</h1>
+    <h3 style="margin-left: 28%;font-size: medium; margin-bottom: -20px;">Navamsa Chart</h3>
+    <h4 style="margin-left: 1%;font-size: medium;">Lagna Chart</h4   >
+   
+    <svg height="200" width="300">
+        <rect x="0" y="0" width="300" height="200" fill="none" stroke="black" stroke-width="1" />
+    
+        <line x1="0" y1="0" x2="300" y2="200"/>
+        <line x1="300" y1="0" x2="0" y2="200"/>
+        <line x1="0" y1="100" x2="150" y2="0"/>
+        <line x1="150" y1="200" x2="300" y2="100"/>
+        <line x1="150" y1="0" x2="300" y2="100"/>
+        <line x1="0" y1="100" x2="150" y2="200"/>
+    
+        <!-- Placeholder for Ascendant -->
+        <text id="ascendantText" x="140" y="14" fill="black" font-size="9" style="font-weight: bold;"></text>
+    
+        <!-- Placeholders for planet names and signs -->
+        <text id="planet1" x="20" y="10" font-size="9" style="font-weight: bold;" ></text>
+        <text id="planet2" x="5" y="20" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet3" x="70" y="65" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet4" x="7" y="120" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet5" x="70" y="160" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet6" x="116" y="130" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet7" x="220" y="160" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet8" x="235" y="150" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet9" x="200" y="80" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet10" x="240" y="50" font-size="9" style="font-weight: bold;"></text>
+        <text id="planet11" x="170" y="10" font-size="9" style="font-weight: bold;"></text>
+        <!-- Add more placeholders for planets as needed -->
+    </svg>
+    
+    <script>
+    const apiResponse = {{ data|safe }};
+    
+    let a; 
+    let ascendantName;
+    const ascendantText = document.getElementById("ascendantText");
+    
+    if (ascendantText) {
+        for (const key in apiResponse) {
+            const planetData = apiResponse[key];
+            if (planetData.name === 'Ascendant') {
+                a = planetData.current_sign;
+                ascendantName = planetData.name; 
+                const ascendantColor = planetData.isRetro === "true" ? "red" : "black";
+                ascendantText.textContent = `${ascendantName}${a === 0 ? 12 : a}`;
+                ascendantText.setAttribute("fill", ascendantColor);
+                break;
+            }
+        }
+    
+        // Create an array to store abbreviated planet names and signs
+        const planetsWithSigns = {};
+    
+        // Store the current signs in an array
+        const currentSigns = Object.values(apiResponse).map(planetData => planetData.current_sign);
+    
+        // Display all planet names along with their current signs except Ascendant
+        for (const key in apiResponse) {
+            const planetData = apiResponse[key];
+            if (planetData.name !== 'Ascendant') {
+                const currentSign = planetData.current_sign;
+                const abbreviatedName = planetData.name.substring(0, 2); // Use the first three letters of the planet name
+                if ((planetData.name=='Uranus')|| (planetData.name=='Neptune')||(planetData.name=='Pluto')){
+                    continue;
+                }
+                if (planetsWithSigns[currentSign]) {
+                    planetsWithSigns[currentSign].push({ name: abbreviatedName, isRetro: planetData.isRetro });
+                } else {
+                    planetsWithSigns[currentSign] = [{ name: abbreviatedName, isRetro: planetData.isRetro }];
+                }
+            }
+        }
+    
+        // Calculate the positions of the planets in an anticlockwise order relative to the Ascendant
+        // ...
+
+// Calculate the positions of the planets in an anticlockwise order relative to the Ascendant
+const sortedSigns = [];
+for (let i = 1; i <= 12; i++) {
+    const Sign = (a + i - 1) % 12 + 1; // Calculate the sign number (1 to 12)
+    const planetInfos = planetsWithSigns[Sign] || [];
+    const planetNames = planetInfos.map((planetInfo, index) => {
+        const planetColor = planetInfo.isRetro === "true" ? "red" : "black";
+        const x = [20, 5, 70, 10, 70, 116, 220, 235, 200, 240, 180][i - 0.5]; // Adjust the x attribute for each planet
+        const y = [10, 25, 65, 130, 160, 130, 160, 150, 80, 50, 10][i - 0.5];
+        const nameLines = planetInfo.name.split(' ').map(name => `<tspan x="${x}"  dy="8" fill="${planetColor}">${name}</tspan>`).join('\n');
+        return nameLines; // Adjust the y attribute for each planet
+        // return `<tspan x="${x}" y="${y}" fill="${planetColor}">${planetInfo.name}</tspan>`;
+    }).join('\n'); // No need for line breaks here
+    
+    const planetElement = document.getElementById(`planet${i}`);
+    if (planetElement) {
+        planetElement.innerHTML = `${Sign === 0 ? 12 : Sign}\n${planetNames}`; // Add sign and planet names
+    }
+
+    // Display in the console
+    console.log(`Sign: ${Sign === 0 ? 12 : Sign}, Planets: ${planetNames}`);
+}
+
+
+        // Ensure that the Ascendant is placed first in the array for its sign
+        const ascendantPlanet = planetsWithSigns[a] || [];
+const ascendantPlanetNames = ascendantPlanet.map((planetInfo, index) => {
+    const planetColor = planetInfo.isRetro === "true" ? "red" : "black";
+    const x = [140, 70, 10, 65, 10, 70, 145, 180, 270, 220, 265, 217][index]; // Adjust the x attribute for each planet
+    const y = [14, 12, 50, 100, 130, 160, 130, 150, 130, 70, 35, 9][index]; // Adjust the y attribute for each planet
+    const nameLines = planetInfo.name.split(' ').map(name => `<tspan x="${140}"  dy="11"  fill="${planetColor}">${name}</tspan>`).join('\n');
+    return nameLines;
+}).join('\n<tspan x="140" dy="12"></tspan>\n'); // Add a dy to separate the Ascendant from other planets
+ascendantText.innerHTML = `${a === 0 ? 12 : a}\n<tspan x="140" dy="12"></tspan>\n${ascendantPlanetNames}`;
+    }
+</script>
+<svg height="200" width="300" style="margin-left: 2%;"> 
+
+    <rect x="0" y="0" width="300" height="200" fill="none" stroke="black" stroke-width="1" />
+
+    <line x1="0" y1="0" x2="300" y2="200"/>
+    <line x1="300" y1="0" x2="0" y2="200"/>
+    <line x1="0" y1="100" x2="150" y2="0"/>
+    <line x1="150" y1="200" x2="300" y2="100"/>
+    <line x1="150" y1="0" x2="300" y2="100"/>
+    <line x1="0" y1="100" x2="150" y2="200"/>
+
+
+    <text id="AscendantText" x="140" y="18" fill="black" font-size="9" style="font-weight: bold;"></text>
+    <text id="planet21" x="20" y="9"font-size="9"style="font-weight: bold;"></text> <!-- Update the IDs -->
+    <text id="planet22" x="8" y="20" font-size="9" style="font-weight: bold;"></text>
+    <text id="planet23" x="65" y="65" font-size="9" style="font-weight: bold;"></text>
+    <text id="planet24" x="5" y="120"font-size="9" style="font-weight: bold;"></text>
+    <text id="planet25" x="70" y="160" font-size="9" style="font-weight: bold;"></text>
+    <text id="planet26" x="120" y="130"font-size="9" style="font-weight: bold;"></text>
+    <text id="planet27" x="220" y="160" font-size="9" style="font-weight: bold;"></text>
+    <text id="planet28" x="235" y="150" font-size="9" style="font-weight: bold;"></text>
+    <text id="planet29" x="192" y="80" font-size="9" style="font-weight: bold;"></text>
+    <text id="planet210" x="240" y="50" font-size="9" style="font-weight: bold;"></text>
+    <text id="planet211" x="170" y="10" font-size="9" style="font-weight: bold;"></text>
+</svg>
+<script>
+    const apiResponse2 = {{ data2|safe }};
+    console.log(apiResponse2)
+    let a2; 
+    let ascendantName2;
+    let ascendantColor2;
+    const ascendantText2 = document.getElementById("AscendantText"); // Updated ID
+
+    if (ascendantText2) {
+        for (const key in apiResponse2) {
+            const planetData2 = apiResponse2[key]; // Updated variable name
+            if (planetData2.name === 'Ascendant') {
+                a2 = planetData2.current_sign;
+                ascendantName2 = planetData2.name; 
+                const ascendantColor2 = planetData2.isRetro === "true" ? "red" : "black";
+                ascendantText2.textContent = `${ascendantName2}${a2 === 0 ? 12 : a2}`;
+                ascendantText2.setAttribute("fill", ascendantColor2);
+                break;
+            }
+        }
+    
+        // Create an array to store abbreviated planet names and signs
+        const planetsWithSigns2 = {};
+    
+        // Store the current signs in an array
+        const currentSigns2 = Object.values(apiResponse2).map(planetData2 => planetData2.current_sign); // Updated variable name
+    
+        // Display all planet names along with their current signs except Ascendant
+        for (const key in apiResponse2) {
+            const planetData2 = apiResponse2[key]; // Updated variable name
+            if (planetData2.name !== 'Ascendant') {
+                const currentSign2 = planetData2.current_sign; // Updated variable name
+                const abbreviatedName2 = planetData2.name.substring(0, 2); // Updated variable name
+                if ((planetData2.name == 'Uranus') || (planetData2.name == 'Neptune') || (planetData2.name == 'Pluto')) {
+                    continue;
+                }
+                if (planetsWithSigns2[currentSign2]) {
+                    planetsWithSigns2[currentSign2].push({ name: abbreviatedName2, isRetro: planetData2.isRetro }); // Updated variable name
+                } else {
+                    planetsWithSigns2[currentSign2] = [{ name: abbreviatedName2, isRetro: planetData2.isRetro }]; // Updated variable name
+                }
+            }
+        }
+    
+        // Calculate the positions of the planets in an anticlockwise order relative to the Ascendant
+        // ...
+
+        // Calculate the positions of the planets in an anticlockwise order relative to the Ascendant
+        const sortedSigns2 = [];
+        for (let i = 1; i <= 12; i++) {
+            const sign2 = (a2 + i - 1) % 12 + 1; // Updated variable name
+            const planetInfos2 = planetsWithSigns2[sign2] || [];
+            const planetNames2 = planetInfos2.map((planetInfo2, index) => { // Updated variable name
+                const planetColor2 = planetInfo2.isRetro === "true" ? "red" : "black"; // Updated variable name
+                const x2 = [20, 5, 65, 5, 70, 120, 220, 235, 192, 240, 170][i - 0.5]; // Updated variable name
+                const y2 = [9, 25, 65, 120, 160, 130, 160, 150, 80, 50, 10][i - 0.5]; // Updated variable name
+                const nameLines2 = planetInfo2.name.split(' ').map(name2 => `<tspan x="${x2}"  dy="9" fill="${planetColor2}">${name2}</tspan>`).join('\n'); // Updated variable name   
+                return nameLines2;
+            }).join('\n'); // No need for line breaks here
+    
+            const planetElement2 = document.getElementById(`planet2${i}`); // Updated ID
+            if (planetElement2) {
+                planetElement2.innerHTML = `${sign2 === 0 ? 12 : sign2}\n${planetNames2}`; // Add sign and planet names
+            }
+
+            // Display in the console
+            console.log(`Sign: ${sign2 === 0 ? 12 : sign2}, Planets: ${planetNames2}`);
+        }
+
+        // Ensure that the Ascendant is placed first in the array for its sign
+        const ascendantPlanet2 = planetsWithSigns2[a2] || [];
+        const ascendantPlanetNames2 = ascendantPlanet2.map((planetInfo2, index) => { // Updated variable name
+            const planetColor2 = planetInfo2.isRetro === "true" ? "red" : "black"; // Updated variable name
+            const x2 = [145, 68, 10, 65, 10, 70, 145, 220, 270, 220, 265, 217][index]; // Updated variable name
+            const y2 = [18, 7, 50, 100, 130, 160, 130, 165, 130, 70, 35, 9][index]; // Updated variable name
+            const nameLines2 = planetInfo2.name.split(' ').map(name2 => `<tspan x="${140}"  dy="11"  fill="${planetColor2}">${name2}</tspan>`).join('\n'); // Updated variable name
+            return nameLines2;
+        }).join('\n<tspan x="140" dy="12"></tspan>\n'); // Add a dy to separate the Ascendant from other planets
+        ascendantText2.innerHTML = `${a2 === 0 ? 12 : a2}\n<tspan x="140" dy="12"></tspan>\n${ascendantPlanetNames2}`;
+
+        // Log the Ascendant information
+        console.log(`Ascendant Name: ${ascendantName2}`);
+        console.log(`Ascendant Sign: ${a2 === 0 ? 12 : a2}`);
+        console.log(`Ascendant Color: ${ascendantColor2}`);
+    }
+</script>
+
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Planet</th>
+                <th>Sign</th>
+                <th>Full Degree</th>
+                <th>Normalized Degree</th>
+                <th>Is Retrograde</th>
+            </tr>
+        </thead>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const data = JSON.parse('{{ data|escapejs }}');
+        
+                // Check if data is an object
+                if (typeof data === 'object') {
+                    for (const key in data) {
+                        const planet = data[key];
+                        const row = document.createElement("tr");
+        
+                        const nameCell = document.createElement("td");
+                        nameCell.textContent = planet.name;
+                        row.appendChild(nameCell);
+        
+                        const currentSignCell = document.createElement("td");
+                        currentSignCell.textContent = planet.current_sign || "-";
+                        row.appendChild(currentSignCell);
+        
+                        const fullDegreeCell = document.createElement("td");
+                        fullDegreeCell.textContent = planet.fullDegree || "-";
+                        row.appendChild(fullDegreeCell);
+        
+                        const normDegreeCell = document.createElement("td");
+                        normDegreeCell.textContent = planet.normDegree || "-";
+                        row.appendChild(normDegreeCell);
+        
+                        const isRetroCell = document.createElement("td");
+                        isRetroCell.textContent = planet.isRetro || "-";
+                        row.appendChild(isRetroCell);
+        
+                        document.querySelector("table").appendChild(row);
+                    }
+                }
+            });
+        </script>
+    </table>
+    <div class="container" style="margin: 5%;">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-margin" data-context="{{data_for_num1}}">d2-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-secondary btn-margin" data-context="{{data_for_num2}}">d3-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-success btn-margin" data-context="{{data_for_num3}}">d4-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-info btn-margin" data-context="{{data_for_num4}}">d5-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-warning btn-margin" data-context="{{data_for_num5}}">d6-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-danger btn-margin" data-context="{{data_for_num6}}">d7-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-dark btn-margin" data-context="{{data_for_num7}}">d8-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-margin" data-context="{{data_for_num8}}">d10-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-secondary btn-margin" data-context="{{data_for_num9}}">d11-chart-info</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <button type="button" class="btn btn-success btn-margin" data-context="{{data_for_num10}}">d12-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-info btn-margin" data-context="{{data_for_num11 }}">d16-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-warning btn-margin" data-context="{{data_for_num12}}">d20-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-danger btn-margin" data-context="{{data_for_num13}}">d24-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-dark btn-margin" data-context="{{data_for_num14}}">d27-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-margin" data-context="{{data_for_num15}}">d30-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-secondary btn-margin" data-context="{{data_for_num16}}">d40-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-success btn-margin" data-context="{{data_for_num17}}">d45-chart-info</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-info btn-margin" data-context="{{data_for_num18}}">d60-chart-info</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let newApiResponse = null; // Initialize newApiResponse variable
+
+        // Add event listeners to the buttons
+        document.querySelectorAll('.btn-margin').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                // Extract the context value from the button's data-context attribute
+                const contextValue = event.target.getAttribute('data-context');
+
+                // Store the context value in newApiResponse
+                newApiResponse = contextValue;
+                localStorage.setItem('newApiResponse', contextValue);
+        
+                // Redirect to the new page
+                window.location.href = "{% url 'astroapp:new_svg' %}";
+
+                // You can now use newApiResponse as needed
+                // console.log('New API Response:', newApiResponse);
+            });
+        });
+    </script>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #333;
+}
+
+h3, h4 {
+    color: #555;
+}
+
+svg {
+    margin-left: 2%;
+}
+
+table {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #0004fa;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.container {
+    margin: 5%;
+}
+
+.row {
+    margin-bottom: 10px;
+}
+
+.btn-margin {
+    margin-right: 10px;
+}
+
+/* Add more styles as needed */
+
+/* Add specific styles for your buttons if required */
+.btn {
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+@media only screen and (max-width: 600px) {
+    /* Adjust styles for screens up to 600 pixels wide */
+
+    svg {
+        margin-left: 0;
+    }
+
+    .container {
+        margin: 2%;
+    }
+
+    .btn-margin {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+   
+
+
+
+    
+    /* Add more styles for mobile as needed */
+}
+    </style>
+{%endblock%}

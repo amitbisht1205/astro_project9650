@@ -1,0 +1,82 @@
+{% extends 'astro_app/base.html' %}
+{% block language_selection %}
+{% endblock %}
+{%block head%}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Unlock the secrets of your life with our Numerology Form. Get personalized insights and predictions based on the ancient art of numerology.">
+<meta name="keywords" content="numerology, numerology form, life predictions, numerology insights">
+<meta name="author" content="Your Numerology Website">
+
+<meta property="og:title" content="Numerology Insights - Personalized Numerology Form">
+    <meta property="og:description" content="Unlock the secrets of your life with our Numerology Form. Get personalized insights and predictions based on the ancient art of numerology.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.call-astro.in/numerology-form">
+    <meta property="og:image" content="https://www.call-astro.in/images/numerology-form.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@YourNumerology">
+    <meta name="twitter:title" content="Numerology Insights - Personalized Numerology Form">
+    <meta name="twitter:description" content="Unlock the secrets of your life with our Numerology Form. Get personalized insights and predictions based on the ancient art of numerology.">
+    <meta name="twitter:image" content="https://www.yournumerologywebsite.com/images/numerology-form.jpg">
+
+{%endblock%}
+{% block body %}
+<h2>Unlock the Secrets with Our Numerology Form</h2>
+<p>Discover personalized insights and predictions about your life using the ancient art of numerology. Fill out the form below to get started.</p>
+  <form method="post" class="signup-form">
+    {% csrf_token %}
+    <h2 style="margin-left: 20%; font-weight: 400; margin-bottom: 5%;">Enter Birth Details</h2>
+    <div class="form-name">
+      <label for="fullName" style="margin-right: 12%;">Name</label>
+      {{ form.Name }}
+    </div>
+  
+    <div class="form-gender">
+      <label for="gender" style="margin-right: 15%;">Gender</label>
+      {{ form.Gender }}
+    </div>
+  
+    <div class="form-date">
+      <label for="dob">Date of Birth</label>
+      {{ form.DOB}}
+    </div>
+  
+    <div class="form-time">
+      <label for="tob">Time of Birth</label>
+      {{ form.TOB }}
+    </div>
+  
+    <div class="form-place">
+      <label for="{{ form.POB.id_for_label }}">Place of Birth</label>
+      <input type="text" id="place" name="{{ form.POB.name }}"> <!-- Add id and name attribute -->
+    </div>
+    <div class="form-buttons">
+      <!-- <button type="submit" id="submit-button" href>Generate Numerology Report</button> -->
+      <!-- <a class="btn btn-primary" href="{%url 'astroapp:calculate_moolank' form.DOB%}" role="button" type="submit" id="submit-button">Generate Numerology Report</a> -->
+      <button class="btn btn-primary" type="submit" id="submit-button" >Generate Numerology Report</button>
+    </div>
+  </form>
+  <style>
+    input[type="text"], input[type="Gender"], input[type="DOB"], input[type="TOB"] , input[type="POB"]{
+    width: 50%;
+    margin-bottom: 10%;
+  }
+  </style>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2bSrjroNJthADBBC0l53d08wbx34iZvc&libraries=places&callback=initMap"></script>
+  <script type="text/javascript">
+      function initMap(){
+          const autocomplete= new google.maps.places.Autocomplete((document.getElementById('place')), {
+              types: ['geocode'],
+              // center: { lat: -34.397, lng: 150.644 },
+              // zoom: 8
+          });
+
+          google.maps.event.addListener(autocomplete,'places_changed',function(){
+              var nplace = autocomplete.getPlace();
+          // alert("Maps");
+          })
+      };
+      window.initMap = initMap;
+  </script>
+{% endblock %}

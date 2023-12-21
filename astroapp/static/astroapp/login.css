@@ -1,0 +1,46 @@
+.signin-form {
+  margin-top: 2%;
+    border: 1px black; /* Add a border */
+    padding: 30px;
+    width: 400px;
+    margin-left: 32%;
+    background-color: #ebb631;;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); /* Add a dark shadow */
+}
+
+.signin-form h1 {
+    text-align: center;
+    padding: 20px;
+}
+
+.signin-form table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signin-form table td {
+    padding: 15px;
+    text-align: center;
+}
+
+.signin-form input[type="text"]
+{
+    width: 30%;
+    margin-bottom: 10px;
+}
+.signin-form input[type="password"] {
+    width: 30%;
+    margin-bottom: 10px;
+}
+
+.signin-form input[type="submit"] {
+    display: block;
+    margin: 0 auto;
+    width: 100px; /* Adjust button width */
+}
+
+.signup-button {
+    text-align: center;
+    margin-top: 20px;
+    margin-left: -4%;
+}

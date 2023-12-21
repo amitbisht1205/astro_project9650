@@ -1,0 +1,66 @@
+{%extends 'astro_app/base.html'%}
+{%block body%}
+
+
+<div class="birth_form">
+
+    <p>Enter Birth Details</p>
+    <form name="form" id="form" method="get">
+
+        <div class="form-name">
+            <label for="name">Name</label>
+            <input type="text" placeholder=" fullName" id="name">
+        </div>
+
+        <div class="form-gender">
+            <label for="gender">Gender</label>
+            <select name="gender" id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+
+        <div class="form-date">
+            <label for="date-of-birth">DOB</label>
+            <input type="date" id="date">
+        </div>
+
+        <div class="form-time">
+            <label for="time">Time of Birth</label>
+            <input type="time" name="time" id="time">
+        </div>
+
+        <div class="form-place">
+            <label for="place">Place of Birth</label>
+            <input type="text" name="place" id="place">
+
+        </div>
+
+
+        <div class="form-buttons">
+            <button type="submit">Numerology Report</button>
+        </div>
+
+    </form>
+</div>
+
+<!-- Google Maps api -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript"
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YHIuPJYMOJzS6wSw5eZ0dTYXnhZFLs&libraries=places"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+    var autocomplete;
+    autocomplete = new google.maps.places.Autocomplete((document.getElementById('place')), {
+        types: ['geocode'],
+    });
+});
+
+</script>
+
+<script src="/static/numerology.js"></script>
+
+{%endblock%}

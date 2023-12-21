@@ -1,0 +1,40 @@
+{%extends 'astro_app/base.html'%}
+{%block body%}
+<div class="tarot-cards">
+    <div class="heading">
+        <h2 id="cardNum">Tarot Prediction</h2>
+    </div>
+
+    <div class="cards" onclick="gotoTarot_Prediction()">
+        <div class="card-img">
+            <img id="num-img" src="/static/image/cards.png" alt="cards-image ">
+        </div>
+
+        <div class="card-desc">
+            <h2 id="cardNumDetail">Click to get your Card</h2>
+            <p id="predictionUp"></p>
+            <p id="predictionDown"></p>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    var lang = document.getElementById('lang');
+var lang_value = lang.value
+console.log(lang_value)
+lang_value = localStorage.getItem('lang')
+console.log(lang_value)
+document.getElementById(lang_value).setAttribute('selected', true)
+
+lang.addEventListener('change',()=>{
+lang_value= lang.value;
+console.log("On change: "+ lang_value);
+localStorage.setItem('lang', lang_value)
+})
+
+    function gotoTarot_Prediction() {
+        window.location = "/tarot-predict"
+    }
+</script>
+{%endblock%}

@@ -1,0 +1,49 @@
+@media (max-width: 768px) { /* Adjust the maximum width as needed */
+    .nav-lang {
+        margin-left: 0; /* Reset the left margin for mobile */
+    }
+    
+    .nav-lang form {
+        flex-direction: column; /* Stack elements vertically for mobile */
+    }
+    
+    .nav-lang label {
+        margin: 0; /* Remove margin around the label for mobile */
+    }
+    
+    .nav-lang select {
+        margin: 0; /* Remove margin around the select for mobile */
+        margin-top: 5px; /* Add some top margin to separate elements */
+    }
+    
+    .nav-lang button {
+        margin: 0; /* Remove margin around the button for mobile */
+        margin-top: 10px; /* Add top margin to separate the button from the select */
+    }
+}
+
+li.nav-item.dropdown.active {
+    /* Your CSS styles for this element go here */
+    margin-right: 10%;
+    /* Add any other styles you want to apply */
+}
+/* Default styles for larger screens */
+.navbar1 {
+    background-color: #d4b06a;
+}
+
+/* Media query for phones (adjust the max-width to your preference) */
+@media (max-width: 768px) {
+    .navbar1 {
+        background-color: #d4b06a;
+        width: 100%; /* Set the width to 100% for phones */
+    }
+
+    .nav-link {
+        margin-right: 10px; /* Adjust the margin for nav-links on phones */
+    }
+
+    .nav-item.dropdown.active {
+        margin-left: 10px; /* Adjust the margin for the user dropdown on phones */
+    }
+}

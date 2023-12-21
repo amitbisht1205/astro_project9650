@@ -1,0 +1,216 @@
+{%extends 'astro_app/base.html'%}
+{% load static %}
+{%block body%}
+<div class="numerology-report" style="background-color: #faebca;">
+    <div class="report-heading">
+        <h1>Your Numerology Report</h1>
+    </div>
+
+    <div class="report-header">
+        <div class="header-content">
+            <h2><span id="Moolank">{{moolank}}</span></h2>
+            <p class="numerology-content">Moolank Number</p>
+        </div>
+        <div class="header-content">
+            <h2 style="color:rgb(212, 187, 44);"><span id="Bhagyank">{{bhagyank}}</span></h2>
+            <p class="numerology-content">Bhagyank Number</p>
+        </div>
+        <div class="header-content">
+            <h2 style="color:rgb(57, 69, 240);"><span>9</span></h2>
+            <p class="numerology-content">Name Number</p>
+        </div>
+    </div>
+
+    <div class="report-row">
+        <div class="report-column">
+            <div class="body-content">
+                <p class="numerology-content">Name</p>
+                <h2 style="color:rgba(17, 15, 13, 0.907);"><span id="numerology_name"></span></h2>
+            </div>
+            <div class="body-content">
+                <p class="numerology-content">Date Of Birth</p>
+                <h2 style="color:rgba(16, 12, 5, 0.885);"><span id="numerology_date"></span></h2>
+            </div>
+            <div class="body-content">
+                <p class="numerology-content">Favourable Sign</p>
+                <h2 style="color:rgb(194, 133, 21);"><span>Cah2ricorn</span></h2>
+            </div>
+        </div>
+        
+        <div class="report-column">
+            <div class="body-content">
+                <p class="numerology-content">Favourable Alphabets</p>
+                <h2 style="color:rgb(194, 133, 21);"><span>D,M,V</span></h2>
+            </div>
+            <div class="body-content">
+                <p class="numerology-content">Gemstone</p>
+                <h2 style="color:rgb(41, 75, 167);"><span style="font-size: large;">Hessonite [Gomed] (Colored)</span></h2>
+            </div>
+            <div class="body-content">
+                <p class="numerology-content">Favourable Day(s)</p>
+                <h2 style="color:rgb(41, 75, 167);"><span style="font-size: large;">Saturday, Sunday, Monday</span></h2>
+            </div>
+        </div>
+    </div>
+    <div class="report-row">
+        <div class="report-column">
+            <div class="body-content">
+                <p class="numerology-content">Favourable Number</p>
+                <h2><span>4</span></h2>
+            </div>
+            <div class="body-content">
+                <p class="numerology-content">Direction</p>
+                <h2><span>East[poorva]</span></h2>
+            </div>
+            <div class="body-content">
+                <p class="numerology-content">Auspicious Colour</p>
+                <h2 style="color:rgb(41, 75, 167);"><span>Blue</span></h2>
+            </div>
+        </div>
+        <div class="report-column">
+            <div class="body-content">
+                <p class="numerology-content">Ruling planet</p>
+                <h2 style="color:rgb(41, 75, 167);"><span style="font-size: large;">Rahu (Dragon's Head)</span></h2>
+            </div>
+            <div class="body-content">
+                <p class="numerology-content">God/Goddess</p>
+                <h2><span>Goddess Durga</span></h2>
+            </div>
+            <div class="body-content">
+                <p class="numerology-content">Fast</p>
+                <h2><span>Saturday</span></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="output" style="background-color: #faebca;">
+    <!-- <h2 id="output-heading"> Hi <span id="numerology_name"></span>,</h2> -->
+    <div class="numerology_details">
+        <div class="moolank_details">
+            <h4>Your Moolank: <span id="moolank">{{moolank}}</span></h4>
+            {%if moolank_prediction_eng%}
+            <h4>Your Moolank Prediction <br> <span id="moolankPrediction">{{moolank_prediction_eng}}</span></h4>
+            {%else%}
+            <h4><br> <span id="moolankPrediction">{{moolank_prediction_hin}}</span></h4>
+            {%endif%}
+        </div>
+    </div>
+
+    <div class="numerology_details">
+        <div class="bhagyank_details">
+            <h4>Your Bhagyank: <span id="bhagyank">{{bhagyank}}</span></h4>
+            {%if bhagyank_prediction_eng%}
+            <h4>Your Bhagyank Prediction<br> <span id="bhagyankPrediction">{{bhagyank_prediction_eng}}</span></h4>
+            {%else%}
+            <h4><br> <span id="bhagyankPrediction">{{bhagyank_prediction_hin}}</span></h4>
+            {%endif%}
+        </div>
+    </div>
+
+</div>
+<div class="namank" style="background-color: #faebca;">
+
+    <div class="namank-heading">
+        <h2>Your Namank</h2>
+    </div>
+
+    <div class="namank-details">
+
+        <div class="chald-numerology">
+            <div class="details-heading">
+                <h3>Chaldean Name Numerology</h3>
+            </div>
+
+            <table class="namank-details-table">
+                <thead>
+                    <tr>
+                        <th class="component-heading">Destiny Number</th>
+                        <th class="component-heading">Heart Number</th>
+                        <th class="component-heading">Personality Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="component-desc">
+                        <td id="destiny_num_chald">1</td>
+                        <td id="soul_num_chald">2</td>
+                        <td id="dream_num_chald">3</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="pythagorean-numerology">
+            <div class="details-heading">
+                <h3>Pythagorean Name Numerology</h3>
+            </div>
+
+            <table class="namank-details-table">
+                <thead>
+                    <tr>
+                        <th class="component-heading">Destiny Number</th>
+                        <th class="component-heading">Heart Number</th>
+                        <th class="component-heading">Personality Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="component-desc">
+                        <td id="destiny_num_chald">1</td>
+                        <td id="soul_num_chald">2</td>
+                        <td id="dream_num_chald">3</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+
+        </div>
+    </div>
+
+
+
+<div class="LoShuGrid">
+    <div class="grid-heading">
+        <h2>Lo-Shu-Grid Numerology</h2>
+    </div>
+
+    <table class="grid-container">
+        <tr>
+            <td class="grid-item">
+                <p id="4"> <sup class="four"></sup> </p>
+            </td>
+            <td class="grid-item">
+                <p id="9"> <sup class="nine"></sup> </p>
+            </td>
+            <td class="grid-item">
+                <p id="2"> <sup class="two"></sup> </p>
+            </td>
+        </tr>
+        <tr>
+            <td class="grid-item">
+                <p id="3"> <sup class="three"></sup> </p>
+            </td>
+            <td class="grid-item">
+                <p id="5"> <sup class="five"></sup> </p>
+            </td>
+            <td class="grid-item">
+                <p id="7"> <sup class="seven"></sup> </p>
+            </td>
+        </tr>
+        <tr>
+            <td class="grid-item">
+                <p id="8"> <sup class="eight"></sup> </p>
+            </td>
+            <td class="grid-item">
+                <p id="1"> <sup class="one"></sup> </p>
+            </td>
+            <td class="grid-item">
+                <p id="6"> <sup class="six"></sup> </p>
+            </td>
+        </tr>
+    </table>
+    
+</div>
+</div>
+
+
+{%endblock%}

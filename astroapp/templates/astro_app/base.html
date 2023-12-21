@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery="full" %}
+    {% load static %}
+    <meta name="description" content="Unlock the power of astrology with personalized consultations. Our expert astrologers provide insights and guidance for a brighter future.">
+    <meta name="keywords" content="astrology, astrology consultations, horoscope readings, astrological guidance">
+    <meta name="author" content="Your Astrology Consultation Website">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Astrology Consultations - Personalized Guidance for a Brighter Future">
+    <meta property="og:description" content="Unlock the power of astrology with personalized consultations. Our expert astrologers provide insights and guidance for a brighter future.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.call-astro.in">
+    <meta property="og:image" content="https://www.call-astro.in/images/astrology-consultations.jpg">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@YourAstrology">
+    <meta name="twitter:title" content="Astrology Consultations - Personalized Guidance for a Brighter Future">
+    <meta name="twitter:description" content="Unlock the power of astrology with personalized consultations. Our expert astrologers provide insights and guidance for a brighter future.">
+    <meta name="twitter:image" content="https://www.call-astro.in/images/astrology-consultations.jpg">
+
+    <!-- Canonical Link -->
+    <meta name="keywords" content="astrology, choghadiya timings, horoscope, auspicious timings">
+    <link rel="stylesheet" type="text/css" href="{% static 'astroapp/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'astroapp/kundlitable.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'astroapp/xyz.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'astroapp/numerology_template.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'astroapp/login.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'astroapp/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'astroapp/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'astroapp/language.css' %}">
+    <link rel="stylesheet" href="{% static 'astroapp/button.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    
+    <!-- Additional head content, like stylesheets and scripts, can go here -->
+    {% block head %}{% endblock %}
+</head>
+<body style="background-color: #f5d889;">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar1" style="background-color: #d4b06a;">
+        
+        <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="sidebar">
+            <span class="closebtn">&times;</span>
+            <a href="{% url 'astroapp:home' %}">Home</a>
+            <a href="{% url 'astroapp:test_numerology' %}">Numerology</a>
+            <a href="{% url 'astroapp:click_to_get_card' %}">Tarot</a>
+            <a href="{% url 'astroapp:kundli' %}">Kundli</a>
+            <a href="{% url 'astroapp:choghadiya' %}">Choghadiya</a>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'astroapp:logout' %}">Logout</a>
+            {% endif %}
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <a class="navbar-brand"  href="{% url 'astroapp:home'%}" style="color: black; margin-right: 100px;" cla>Home</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{%url 'astroapp:test_numerology'%}" style="color: black; margin-right: 50px; margin-left: -20px;">Numerology <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{%url 'astroapp:click_to_get_card'%}" style="color: black; margin-right: 50px;">Tarot</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{%url 'astroapp:kundli'%}" style="color: black;margin-right: 50px;">Kundli</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{%url 'astroapp:choghadiya'%}" style="color: black;margin-right: 50px;">choghadiya</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item dropdown active" style="margin-left: 30px; margin-right: 50px;">
+                        <a class="nav-link dropdown-toggle"href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: black;">
+                            {{request.user.first_name}}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#" style="color: black;">Action</a>
+                            <a class="dropdown-item" href="#" style="color: black;">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{%url 'astroapp:logout'%}" style="color: black;">logout</a>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+            {% block language_selection %}
+                <div class="nav-lang" style="margin-left: -50px;">
+                    <form method="POST" action="{% url 'astroapp:set_language' %}" class="d-flex align-items-center">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <label class="onhover" for="lang" style="margin-right: 10px;">Lang</label>
+                        <select name="lang" id="lang" class="mr-2">
+                            <option value="eng">English</option>
+                            <option value="hin">Hindi</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Set Language</button>
+                    </form>
+                </div>
+            {% endblock %}
+        </div>
+    </nav>
+
+    <style>
+        /* Sidebar Styles */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #d4b06a; /* Adjust the background color as needed */
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 40px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px; /* Adjust the font size as needed */
+            color: black; /* Adjust the text color as needed */
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd; /* Adjust the hover background color as needed */
+            color: black; /* Adjust the hover text color as needed */
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            animation: fadeIn 1s;
+        }
+
+        /* Add animation to the close button */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Sidebar active state */
+        .sidebar-active {
+            width: 250px;
+        }
+        
+    </style>
+    <style>
+      
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $(".navbar-toggler").click(function() {
+                $(".sidebar").toggleClass("sidebar-active");
+            });
+
+            $(".closebtn").click(function() {
+                $(".sidebar").removeClass("sidebar-active");
+            });
+        });
+    </script>
+
+    {% block body %}{% endblock %}
+</body>
+</html>

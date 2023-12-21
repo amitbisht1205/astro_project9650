@@ -1,0 +1,12 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Pinnacle Number Result{%endblock%}
+{%block body%}
+{% if freq %}
+<h2>Frequency Dictionary:</h2>
+<pre>
+    {% for key, value in freq.items %}
+        {{ key }}: {{ value }}
+    {% endfor %}
+</pre>
+{% endif %}
+{%endblock%}

@@ -1,0 +1,114 @@
+{% extends 'astro_app/base.html' %}
+{% block body %}
+<svg height="400" width="600" style="margin: 5%;">
+    <rect x="0" y="0" width="600" height="400" fill="none" stroke="black" stroke-width="1" />
+
+    <line x1="0" y1="0" x2="600" y2="400" />
+    <line x1="600" y1="0" x2="0" y2="400" />
+    <line x1="0" y1="200" x2="300" y2="0" />
+    <line x1="300" y1="400" x2="600" y2="200" />
+    <line x1="300" y1="0" x2="600" y2="200" />
+    <line x1="0" y1="200" x2="300" y2="400" />
+
+    <!-- Placeholder for Ascendant -->
+    <text id="ascendantText" x="300" y="20" fill="black" font-size="11" style="font-weight: bold;"></text>
+
+    <!-- Placeholders for planet names and signs -->
+    <text id="planet1" x="30" y="12" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet2" x="10" y="30" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet3" x="135" y="120" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet4" x="5" y="230" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet5" x="132" y="325" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet6" x="222" y="260" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet7" x="440" y="320" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet8" x="462" y="300" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet9" x="390" y="150" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet10" x="464" y="100" font-size="12" style="font-weight: bold;"></text>
+    <text id="planet11" x="325" y="12" font-size="10" style="font-weight: bold;"></text>
+    <!-- Add more placeholders for planets as needed -->
+</svg>
+
+<script>
+   const newApiResponse = JSON.parse(localStorage.getItem('newApiResponse'));
+
+    // console.log('newApiResponse:', newApiResponse);
+
+    let a;
+    let ascendantName;
+    const ascendantText = document.getElementById("ascendantText");
+
+    if (ascendantText) {
+        for (const key in newApiResponse) {
+            const planetData = newApiResponse[key];
+            if (planetData.name === 'Ascendant') {
+                a = planetData.current_sign;
+                ascendantName = planetData.name;
+                const ascendantColor = planetData.isRetro === "true" ? "red" : "black";
+                ascendantText.textContent = `${ascendantName}${a === 0 ? 12 : a}`;
+                ascendantText.setAttribute("fill", ascendantColor);
+                break;
+            }
+        }
+
+        // Create an array to store abbreviated planet names and signs
+        const planetsWithSigns = {};
+
+        // Store the current signs in an array
+        const currentSigns = Object.values(newApiResponse).map(planetData => planetData.current_sign);
+
+        // Display all planet names along with their current signs except Ascendant
+        for (const key in newApiResponse) {
+            const planetData = newApiResponse[key];
+            if (planetData.name !== 'Ascendant') {
+                const currentSign = planetData.current_sign;
+                const abbreviatedName = planetData.name.substring(0, 2); // Use the first three letters of the planet name
+                if ((planetData.name == 'Uranus') || (planetData.name == 'Neptune') || (planetData.name == 'Pluto')) {
+                    continue;
+                }
+                if (planetsWithSigns[currentSign]) {
+                    planetsWithSigns[currentSign].push({ name: abbreviatedName, isRetro: planetData.isRetro });
+                } else {
+                    planetsWithSigns[currentSign] = [{ name: abbreviatedName, isRetro: planetData.isRetro }];
+                }
+            }
+        }
+
+        // Calculate the positions of the planets in an anticlockwise order relative to the Ascendant
+        // ...
+
+        // Calculate the positions of the planets in an anticlockwise order relative to the Ascendant
+        const sortedSigns = [];
+        for (let i = 1; i <= 12; i++) {
+            const Sign = (a + i - 1) % 12 + 1; // Calculate the sign number (1 to 12)
+            const planetInfos = planetsWithSigns[Sign] || [];
+            const planetNames = planetInfos.map((planetInfo, index) => {
+                const planetColor = planetInfo.isRetro === "true" ? "red" : "black";
+                const x = [20, 5, 70, 10, 70, 116, 220, 235, 200, 240, 180][i - 0.5]; // Adjust the x attribute for each planet
+                const y = [10, 25, 65, 130, 160, 130, 160, 150, 80, 50, 10][i - 0.5];
+                const nameLines = planetInfo.name.split(' ').map(name => `<tspan x="${x}"  dy="10" fill="${planetColor}">${name}</tspan>`).join('\n');
+                return nameLines; // Adjust the y attribute for each planet
+                // return `<tspan x="${x}" y="${y}" fill="${planetColor}">${planetInfo.name}</tspan>`;
+            }).join('\n'); // No need for line breaks here
+
+            const planetElement = document.getElementById(`planet${i}`);
+            if (planetElement) {
+                planetElement.innerHTML = `${Sign === 0 ? 12 : Sign}\n${planetNames}`; // Add sign and planet names
+            }
+
+            // Display in the console
+            console.log(`Sign: ${Sign === 0 ? 12 : Sign}, Planets: ${planetNames}`);
+        }
+
+        // Ensure that the Ascendant is placed first in the array for its sign
+        const ascendantPlanet = planetsWithSigns[a] || [];
+        const ascendantPlanetNames = ascendantPlanet.map((planetInfo, index) => {
+            const planetColor = planetInfo.isRetro === "true" ? "red" : "black";
+            const x = [300, 70, 10, 65, 10, 70, 145, 180, 270, 220, 265, 217][index]; // Adjust the x attribute for each planet
+            const y = [30, 12, 50, 100, 130, 160, 130, 150, 130, 70, 35, 9][index]; // Adjust the y attribute for each planet
+            const nameLines = planetInfo.name.split(' ').map(name => `<tspan x="${x}"  dy="12"  fill="${planetColor}">${name}</tspan>`).join('\n');
+            return nameLines;
+        }).join('\n<tspan x="140" dy="12"></tspan>\n'); // Add a dy to separate the Ascendant from other planets
+        ascendantText.innerHTML = `${a === 0 ? 12 : a}\n<tspan x="140" dy="12"></tspan>\n${ascendantPlanetNames}`;
+    }
+</script>
+{% endblock %}

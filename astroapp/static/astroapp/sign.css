@@ -1,0 +1,39 @@
+Adjust the width of text fields here
+input[type="text"], input[type="email"] {
+    width: 100%; /* You can adjust the width as needed */
+  }
+  
+  /* Adjust the width of the password input field specifically */
+  form.signin-form input[type="password"] {
+    width: 100%; /* You can adjust the width as needed */
+  }
+
+
+  .social-buttons {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center;
+    margin: 20px;
+    margin-left: 90%; /* Adjust the left margin as needed for fullscreen */
+    margin-bottom: -8%;
+    margin-top: -5%;
+  }
+
+  .social-buttons a {
+    display: inline-block;
+    text-decoration: none;
+    margin: 0 10px; /* Adjust the margin between buttons */
+    transition: transform 0.3s ease-in-out; /* Add a smooth transition effect */
+  }
+
+  /* Animation on hover for all screen sizes */
+  .social-buttons a:hover {
+    transform: scale(1.2); /* Example: Scale the icon by 20% on hover */
+  }
+
+  /* Styles for mobile view */
+  @media only screen and (max-width: 767px) {
+    .social-buttons {
+      margin-left: 0 !important; /* Reset the left margin for mobile view */
+    }
+  }

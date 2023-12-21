@@ -1,0 +1,10 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Chaldean Numerology Calculator{%endblock%}
+{%block body%}
+<h1>Chaldean Numerology Calculator</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Calculate</button>
+</form>
+{%endblock%}

@@ -1,0 +1,13 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Pinnacle Number Result{%endblock%}
+{%block body%}
+<h1>Pinnacle Number Result</h1>
+{% if error_message %}
+<p>{{ error_message }}</p>
+{% else %}
+<p>First Pinnacle: {{ pinnacle_data.first_pinnacle }}</p>
+<p>Second Pinnacle: {{ pinnacle_data.second_pinnacle }}</p>
+<p>Third Pinnacle: {{ pinnacle_data.third_pinnacle }}</p>
+<p>Fourth Pinnacle: {{ pinnacle_data.fourth_pinnacle }}</p>
+{% endif %}
+{%endblock%}

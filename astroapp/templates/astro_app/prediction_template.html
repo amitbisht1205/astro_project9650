@@ -1,0 +1,19 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}prediction page{%endblock%}
+{%block body%}
+<h1>card name page</h1>
+<form method="post" >
+    {% csrf_token %}
+    
+    <label for="rand_num">Card Number:</label>
+    <input type="number" name="rand_num" id="rand_num" required>
+    
+    <label for="bin_num">Binary Number (0 or 1):</label>
+    <input type="number" name="bin_num" id="bin_num" min="0" max="1" required>
+    
+    <label for="lang">Language (eng or hin):</label>
+    <input type="text" name="lang" id="lang" required>
+    
+    <button type="submit">Get Prediction</button>
+</form>
+{%endblock%}

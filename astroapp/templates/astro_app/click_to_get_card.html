@@ -1,0 +1,66 @@
+{%extends 'astro_app/base.html'%}
+{%load static%}
+{%block body%}
+<div class="tarot-container">
+    <h1 class="mobile-header">Tarot Prediction</h1>
+    <div class="card">
+      <img class="card-img-top" src="{% static 'astroapp/img1.webp' %}" alt="Card image">
+      <a href="{% url 'astroapp:tarot_card_view' %}" class="btn btn-primary mobile-button">Click to get your Card</a>
+    </div>
+  </div>
+<style>
+   /* Add this CSS to your styles.css or within a style tag in the HTML file */
+
+/* Style for the container */
+.tarot-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Style for the mobile header */
+.mobile-header {
+  font-size: 24px;
+}
+
+/* Style for the card */
+.card {
+  width: 50%;
+  margin: 0 auto;
+  height: 200px;
+}
+
+/* Style for the card image */
+.card-img-top {
+  width: 100%;
+  height: 300px; /* Set maximum height for the image */
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+  transition: transform 0.3s ease; /* Added transition for smooth hover effect */
+
+}
+
+/* Style for the mobile button */
+.mobile-button {
+  display: block;
+  width: 100%;
+  margin: -5px auto;
+  padding: 10px;
+  background-color: #007bff; /* Bootstrap's primary color */
+  color: #fff; /* Text color */
+  text-decoration: none;
+  border-radius: 5px;
+}
+.card:hover .card-img-top {
+  transform: scale(1.1); /* Scale up the image on hover */
+}
+/* Hover effect for the button */
+.mobile-button:hover {
+  background-color: #0056b3; /* Darker shade of primary color on hover */
+}
+@media (max-width: 576px) {
+  .card {
+    width: 80%; /* Adjust the width to take full width on small screens */
+  }
+}
+
+</style>
+{%endblock%}    

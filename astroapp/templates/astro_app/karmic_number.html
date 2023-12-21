@@ -1,0 +1,14 @@
+{%extends 'astro_app/base.html'%}
+{%block title%}Karmic Number page{%endblock%}
+{%block body%}
+<h1>Karmic Number Calculator</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Calculate</button>
+</form>
+
+{% if karmic_number is not None %}
+<h2>Karmic Number Result: {{ karmic_number }}</h2>
+{% endif %}
+{%endblock%}

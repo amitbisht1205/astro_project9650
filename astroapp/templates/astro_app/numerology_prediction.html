@@ -1,0 +1,120 @@
+{%extends 'astro_app/base.html'%}
+{% block language_selection %}
+{% endblock %}
+{%block body%}
+<h1>Your Numerology Report</h1>
+    <div class="output">
+        <h2 id="output-heading"> Hi <span id="numerology_name"></span>,</h2>
+        <!-- <p>Selected Language: {{ selected_lang }}</p> -->
+        <div class="numerology_details">
+            <div class="moolank_details">
+                <h4>Your Moolank: <span id="moolank">{{moolank}}</span></h4>
+                <h4>Your Moolank Prediction <br> <span id="moolankPrediction">{{moolank_prediction_eng}}</span></h4>
+                <h4> <br> <span id="moolankPrediction">{{moolank_prediction_hin}}</span></h4>
+            </div>
+        </div>
+
+        <div class="numerology_details">
+            <div class="bhagyank_details">
+                <h4>Your Bhagyank: <span id="bhagyank">{{bhagyank}}</span></h4>
+                <h4>Your Bhagyank Prediction<br> <span id="bhagyankPrediction">{{bhagyank_prediction_eng}}</span></h4>
+                <h4><br> <span id="bhagyankPrediction">{{bhagyank_prediction_hin}}</span></h4>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="namank">
+
+        <div class="namank-heading">
+            <h2>Your Namank</h2>
+        </div>
+
+        <div class="namank-details">
+
+            <div class="chald-numerology">
+                <div class="details-heading">
+                    <h3>Chaldean Name Numerology</h3>
+                </div>
+
+                <table class="namank-numerology">
+                    <tr>
+                        <th class="component-heading">Destiny Number</th>
+                        <th class="component-heading">Heart Number</th>
+                        <th class="component-heading">Personality Number</th>
+                    </tr>
+
+                    <tr id="component-desc">
+                        <td id="destiny_num_chald">1</td>
+                        <td id="soul_num_chald">2</td>
+                        <td id="dream_num_chald">3</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="pythagorean-numerology">
+                <div class="details-heading">
+                    <h3>Pythagorean Name Numerology</h3>
+                </div>
+
+                <table class="namank-numerology">
+                    <tr>
+                        <th class="component-heading">Destiny Number</th>
+                        <th class="component-heading">Heart Number</th>
+                        <th class="component-heading">Personality Number</th>
+                    </tr>
+
+                    <tr id="component-desc">
+                        <td id="destiny_num">1</td>
+                        <td id="soul_num">2</td>
+                        <td id="dream_num">3</td>
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="LoShuGrid">
+        <div class="grid-heading">
+            <h2>Lo-Shu-Grid Numerology</h2>
+        </div>
+
+        <div class="grid-container">
+
+            <div class="grid-item">
+                <p id="4"> <sup class="four"></sup> </p>
+            </div>
+            <div class="grid-item">
+                <p id="9"> <sup class="nine"></sup> </p>
+            </div>
+            <div class="grid-item">
+                <p id="2"> <sup class="two"></sup> </p>
+            </div>
+            <div class="grid-item">
+                <p id="3"> <sup class="three"></sup> </p>
+            </div>
+            <div class="grid-item">
+                <p id="5"> <sup class="five"></sup> </p>
+            </div>
+            <div class="grid-item">
+                <p id="7"> <sup class="seven"></sup> </p>
+            </div>
+            <div class="grid-item">
+                <p id="8"> <sup class="eight"></sup> </p>
+            </div>
+            <div class="grid-item">
+                <p id="1"> <sup class="one"></sup> </p>
+            </div>
+            <div class="grid-item">
+                <p id="6"> <sup class="six"></sup> </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/numerology_prediction.js"></script>
+{%endblock%}

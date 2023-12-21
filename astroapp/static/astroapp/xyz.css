@@ -1,0 +1,178 @@
+.main
+{
+    background-color:#faebca ;
+    height: 2500px;
+    width: 100%;
+}
+.report-header {
+    display: flex; /* Display children in a row */
+    justify-content: space-between; /* Distribute space evenly between columns */
+    align-items: center; /* Align items vertically */
+
+}
+
+.header-content {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    flex: 1; /* Allow columns to grow equally */
+    height: 100px;
+    margin: 1%;
+    background-color: whitesmoke;
+}
+
+.numerology-content {
+    margin-top: -10px;
+    color: #777;
+}
+
+.report-body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px; /* Add margin between columns */
+}
+
+.body-content {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    height: 80px;
+}
+.report-row
+ {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .report-column {
+        flex: 1;
+        padding: 10px;
+        
+    }
+
+    .body-content {
+        margin-bottom: 20px;
+        background-color: #ebb631;
+    }
+    .numerology-report
+    {
+        
+        padding-bottom: 40px;
+        height: 850px;
+        width: 80%;
+        margin-left: 10%;
+        margin-top: 5%;
+        border: 1.2px solid red;
+    }
+    .report-heading
+    {
+        margin-left: 2%;
+
+    }
+    .output
+    {
+        margin-left: 5%;
+        border: 1px solid black;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 90%;
+        
+
+    }
+
+    .namank-details-table
+     {
+        border-collapse: collapse;
+        width: 80%;
+        margin-left: 10%;
+    }
+
+    .namank-details-table th
+    {
+        background-color: #d6b876;
+        border: 1px solid #000; /* Add borders to th and td elements */
+        padding: 8px;
+        text-align: center;
+    }
+    .namank-details-table td {
+        border: 1px solid #000; /* Add borders to th and td elements */
+        padding: 8px;
+        text-align: center;
+        
+    }
+ 
+
+    .component-heading {
+        font-weight: bold;
+    }
+
+/* Add table styles */
+table.grid-container {
+    border-collapse: collapse; /* Collapse borders so they appear as a single line */
+    width: 50%; /* Set the table width to 100% of its container */
+    margin-top: 20px; /* Add margin for spacing */
+}
+
+/* Add styles to table header cells (th) */
+table.grid-container th {
+    border: 1px solid #000; /* Add a 1px solid black border to th cells */
+    padding: 8px; /* Add padding for cell content */
+    text-align: center; /* Center-align text in th cells */
+}
+
+/* Add styles to table data cells (td) */
+table.grid-container td {
+    border: 1px solid #000; /* Add a 1px solid black border to td cells */
+    padding: 8px; /* Add padding for cell content */
+    text-align: center; /* Center-align text in td cells */
+}
+
+.LoShuGrid
+{
+    margin-top: 10%;
+    border: 1px solid black;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+    width: 80%;
+    height: 200px;
+    margin-left: 10%;
+    margin-bottom: 10%;
+}
+.grid-container
+    {
+        margin-left: 25%;
+    }
+.grid-heading
+{
+    margin-left: 5%;
+    margin-bottom: 3%;
+}
+    
+.namank-heading
+{
+    margin-left: 40%;
+    margin-bottom: 4%;
+}
+
+
+.namank 
+{
+    border: 1px solid black;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);  
+}   
+
+.details-heading
+{
+    margin: 2%;
+}

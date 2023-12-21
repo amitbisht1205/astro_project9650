@@ -1,0 +1,300 @@
+{% extends 'astro_app/base.html' %}
+{%load static%}
+{%block title%}Kundli Input Form - Astrology Predictions | Call Astro{%endblock%}
+{% block language_selection %}
+{% endblock %}
+{%block head%}
+<meta name="Description" content="how to find zodiac sign, should we believe in zodiac sign, how to do matchmaking in kundli, how to find marriage date from kundli, should you trust your zodiac sign, the best zodiac sign, top 10 most beautiful zodiac sign, top 10 most dangerous zodiac sign, top 5 best zodiac sign, top 5 most intuitive zodiac sign, top 5 rarest zodiac sign, zodiac sign month wise, zodiac sign name in hindi, zodiac sign with date of birth,zodiac sign with dates, zodiac sign with name, zodiac sign with symbol, zodiac sign zodiac signs, how to find marriage date from kundli, about libra zodiac sign, about scorpio zodiac sign, best female zodiac sign to marry, best male zodiac sign to marry, best zodiac sign in the world, best zodiac sign ranking, best zodiac sign to marry, best zodiac signs ranked, can zodiac signs affect your personality, do zodiac signs really matter in relationships">
+<!-- Keywords -->
+<meta name="keywords" content="kundli details, lagna chart, navamsa chart, planets, signs, full degree, normalized degree, retrograde status, astrological analysis, personalized Kundli, planetary influence, zodiac signs, astrological insights">
+
+<!-- Canonical Link (if applicable) -->
+<link rel="canonical" href="{% url 'astroapp:kundli' %}">
+
+<!-- Open Graph Meta Tags (for social media sharing) -->
+<meta property="og:title" content="Kundli Details - Lagna Chart, Navamsa Chart, Planets | Call Astro">
+<meta property="og:description" content="Explore your Kundli details, including Lagna chart, Navamsa chart, planets, signs, full degree, normalized degree, and retrograde status. Get insights into your astrological profile with accurate interpretations. Discover the influence of planetary positions, zodiac signs, and more on your life's journey.">
+<meta property="og:image" content="{% static 'astroapp/kundli_details_image.jpg' %}">
+<meta property="og:url" content="{% url 'astroapp:kundli' %}">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Additional Meta Lines -->
+<meta property="og:site_name" content="Call Astro - Astrology Services">
+<meta property="og:type" content="article">
+<meta name="author" content="Your Name">
+<meta name="robots" content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="format-detection" content="telephone=no">
+
+{%endblock%}
+{% block body %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link rel="stylesheet" href="{% static 'astroapp/kundli_history.css' %}">
+  <h2 style="margin-left: 45%; font-weight: 500;">kundli</h2>
+  <form method="post" class="signup-form" id="your-form-id">
+    {% csrf_token %}
+    <h4 style="margin-left: 20%; font-weight: 400; margin-bottom: 5%;">Enter Birth Details</h4>
+    <div class="form-name">
+      <label for="fullName" style="margin-right: 12%;" class="name">Name</label>
+      {{ form.Name }}
+    </div>
+  
+    <div class="form-gender">
+      <label for="gender" style="margin-right: 15%;" class="gender">Gender</label>
+      {{ form.Gender }}
+    </div>
+  
+    <div class="form-date">
+      <label for="dob">Date of Birth</label>
+      {{ form.DOB}}
+    </div>
+  
+    <div class="form-time">
+      <label for="tob">Time of Birth</label>
+      {{ form.TOB }}
+    </div>
+  
+    <div class="form-place">
+      <label for="{{ form.POB.id_for_label }}">Place of Birth</label>
+      <input type="text" id="place" name="{{ form.POB.name }}"> <!-- Add id and name attribute -->
+    </div>
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+    <div class="form-buttons">
+      <!-- <button type="submit" id="submit-button" href>Generate Numerology Report</button> -->
+      <!-- <a class="btn btn-primary" href="{%url 'astroapp:calculate_moolank' form.DOB%}" role="button" type="submit" id="submit-button">Generate Numerology Report</a> -->
+      <button  type="submit" id="submit-button" >Submit</button>
+    </div>
+  </form>
+  <style>
+    input[type="text"], input[type="Gender"], input[type="DOB"], input[type="TOB"] , input[type="POB"]{
+    width: 50%;
+    margin-bottom: 10%;
+  }
+  </style>
+  <!-- Google Maps api -->
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2bSrjroNJthADBBC0l53d08wbx34iZvc&libraries=places&callback=initMap"></script>
+  <script type="text/javascript">
+      function initMap() {
+    const autocomplete = new google.maps.places.Autocomplete(document.getElementById('place'), {
+        types: ['geocode'],
+    });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var place = autocomplete.getPlace();
+        if (place.geometry && place.geometry.location) {
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+
+            // Set the latitude and longitude values in hidden input fields
+            document.getElementById('latitude').value = latitude;
+            document.getElementById('longitude').value = longitude;
+        }
+    });
+}
+
+window.initMap = initMap;
+
+// Add an event listener to the form submission
+document.getElementById('your-form-id').addEventListener('submit', function () {
+    // Do nothing here; let the form submit normally
+});
+  </script>
+<button id="fetchDataBtn">Fetch History Data</button>
+<div id="historyDataContainer"></div>
+
+<script>
+   function openKundliDetails(name, gender, dob, tob, pob, latitude, longitude) {
+        // Encode the parameters for URL
+        var encodedName = encodeURIComponent(name);
+        var encodedGender = encodeURIComponent(gender);
+        var encodedDOB = encodeURIComponent(dob);
+        var encodedTOB = encodeURIComponent(tob);
+        var encodedPOB = encodeURIComponent(pob);
+        var encodedLatitude = encodeURIComponent(latitude);
+        var encodedLongitude = encodeURIComponent(longitude);
+
+        // Construct the URL with parameters
+        var url = '{% url "astroapp:show_kundli" %}?name=' + encodedName +
+                  '&gender=' + encodedGender +
+                  '&date_of_birth=' + encodedDOB +
+                  '&time_of_birth=' + encodedTOB +
+                  '&place_of_birth=' + encodedPOB +
+                  '&latitude=' + encodedLatitude +
+                  '&longitude=' + encodedLongitude;
+
+        // Navigate to the new URL
+        window.location.href = url;
+    }
+
+    $(document).ready(function () {
+        $("#fetchDataBtn").click(function () {
+            $.ajax({
+                url: '/get_history_data/',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var tableHtml = '<table border="1"><tr>' +
+                        '<th>Name</th>' +
+                        '<th>Gender</th>' +
+                        '<th>Date of Birth</th>' +
+                        '<th>Time of Birth</th>' +
+                        '<th>Place of Birth</th>' +
+                        '<th>latitude</th>' +
+                        '<th>longitude</th>' +
+                        '<th>kundli</th>' +
+                        '</tr>';
+
+                    data.history_data.forEach(function (item) {
+                        tableHtml += '<tr>' +
+                            '<td>' + item.name + '</td>' +
+                            '<td>' + item.gender + '</td>' +
+                            '<td>' + item.date_of_birth + '</td>' +
+                            '<td>' + item.time_of_birth + '</td>' +
+                            '<td>' + item.place_of_birth + '</td>' +
+                            '<td>' + item.latitude + '</td>' +
+                            '<td>' + item.longitude + '</td>' +
+                            '<td class="kundli-button" onclick="openKundliDetails(\'' +
+                                item.name + '\', \'' +
+                                item.gender + '\', \'' +
+                                item.date_of_birth + '\', \'' +
+                                item.time_of_birth + '\', \'' +
+                                item.place_of_birth + '\', \'' +
+                                item.latitude + '\', \'' +
+                                item.longitude +
+                            '\')">Show Kundli</td>' +
+                            '</tr>';
+                    });
+
+                    tableHtml += '</table>';
+
+                    $('#historyDataContainer').html(tableHtml);
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                }
+            });
+        });
+    });
+</script>
+<style>
+   #submit-button {
+    width: 100%; /* Adjust the width as needed */
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #28a745; /* Green color, you can change this */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  #submit-button:hover {
+    background-color: #218838; /* Darker green on hover */
+  }
+
+  .signup-form
+  {
+    margin-top: 5%;
+  }
+  h2
+  {
+   padding-left: -50%;
+    margin-top: 5px;
+    font-family: sans-serif;
+
+  }
+  h4
+  {
+   padding-left: 4%;
+  }
+  /* Style for the table */
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin-top: -500px;
+}
+
+table, th, td {
+  border: 1px solid #0004fa;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+/* Style for the "Fetch History Data" button */
+#fetchDataBtn {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#fetchDataBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Style for the container div */
+#historyDataContainer {
+  margin-top: 20px;
+}
+.kundli-button {
+  padding: 10px 5px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 4px;
+  border-right: 1px solid #fff; /* Add this line for the separator */
+  margin-right: 5px; /* Add some margin between the button and text */
+  font-size: 12px; /* Adjust the font size */
+  margin-top: 10%;
+}
+
+.kundli-button:last-child {
+  border-right: none; /* Remove the separator for the last button */
+}
+
+.kundli-button:hover {
+  background-color: #218838;
+}
+@media only screen and (max-width: 600px) {
+  table {
+    width: 100%;
+  }
+
+  th, td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 8px; /* Adjust the padding for smaller screens */
+  }
+
+  /* Optional: Style the table header differently for better visibility on mobile */
+  th {
+    background-color: #f2f2f2;
+  }
+}
+</style>
+{% endblock %}
+
+
+
+

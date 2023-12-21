@@ -1,0 +1,11 @@
+
+{%extends 'astro_app/base.html'%}
+{%block title%}prediction page{%endblock%}
+{%block body%}
+<h1>Maturity Number Calculator</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Calculate Maturity Number</button>
+    </form>
+{%endblock%}

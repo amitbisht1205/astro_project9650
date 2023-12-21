@@ -1,0 +1,7 @@
+body {
+    background-color:#faebca;
+}
+.nav-item active
+{
+    color: black;
+}
